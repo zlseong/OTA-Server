@@ -1,0 +1,207 @@
+# OTA Server Configuration
+
+server:
+  host: "0.0.0.0"
+  environment: "development"  # development, staging, production
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  workers: 4
+
+# MQTT Configuration
+mqtt:
+  enabled: true
+  host: "localhost"
+  port: 1883
+  secure_port: 8883
+  use_tls: true
+  keepalive: 60
+  qos: 1
+  
+  # Topics
+  topics:
+    telemetry: "vehicle/+/telemetry"
+    control: "vehicle/+/control"
+    diagnostics: "vehicle/+/diagnostics"
+    ota_status: "vehicle/+/ota/status"
+  
+  # Authentication
+  auth:
+    enabled: true
+    username: "ota_server"
+    password_file: "/etc/ota-server/mqtt_password"
+
+# HTTPS Configuration
+https:
+  enabled: true
+  host: "0.0.0.0"
+  port: 443
+  use_tls: true
+  
+  # TLS Configuration
+  tls:
+    cert_file: "certs/server_cert.pem"
+    key_file: "certs/server_key.pem"
+    ca_cert_file: "certs/ca_cert.pem"
+    verify_client: true
+    
+  # PQC Configuration (Default: ML-KEM-768 + ECDSA-P256)
+  pqc:
+    enabled: true
+    config_id: 2  # See pqc_configs.yaml for options
+    allow_config_change: true  # Allow per-vehicle configuration
+
+# Database Configuration
+database:
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  database: "ota_server"
+  username: "ota_admin"
+  password_file: "/etc/ota-server/db_password"
+  pool_size: 20
+  max_overflow: 10
+  echo: false  # Set to true for SQL debugging
+
+# Redis Configuration
+redis:
+  enabled: true
+  host: "localhost"
+  port: 6379
+  db: 0
+  password_file: "/etc/ota-server/redis_password"
+  max_connections: 50
+
+# ECU Configuration
+ecus:
+  count: 100  # ECU_001 ~ ECU_100
+  prefix: "ECU_"
+  version_format: "semantic"  # semantic (x.y.z)
+  
+  # Version Comparison Rules
+  version_rules:
+    major_increment: "breaking_change"
+    minor_increment: "feature_addition"
+    patch_increment: "bug_fix"
+
+# OTA Package Configuration
+ota:
+  package_storage_path: "/var/lib/ota-server/packages"
+  max_package_size: 104857600  # 100 MB
+  compression: "zstd"  # none, gzip, zstd
+  compression_level: 3
+  
+  # Delta Update
+  delta_updates:
+    enabled: true
+    algorithm: "bsdiff"  # bsdiff, xdelta3
+  
+  # Package Verification
+  verification:
+    hash_algorithm: "sha256"
+    signature_algorithm: "ML-DSA-65"  # or ECDSA-P256
+  
+  # Distribution Strategy
+  distribution:
+    strategy: "zonal_gateway_optimized"  # serial, parallel, zonal_gateway_optimized
+    max_concurrent_updates: 10
+    retry_count: 3
+    retry_delay: 60  # seconds
+
+# Diagnostics Configuration
+diagnostics:
+  enabled: true
+  timeout: 30  # seconds
+  max_retries: 3
+  
+  # UDS Configuration
+  uds:
+    protocol_version: "ISO_14229"
+    services:
+      - "DiagnosticSessionControl"
+      - "ECUReset"
+      - "ReadDataByIdentifier"
+      - "WriteDataByIdentifier"
+      - "ReadDTCInformation"
+      - "RoutineControl"
+
+# Zonal Gateway Configuration
+zonal_gateways:
+  enabled: true
+  discovery: "auto"  # auto, manual
+  
+  # Zone Definitions
+  zones:
+    - id: "ZG_POWERTRAIN"
+      ecus: ["ECU_001", "ECU_002", "ECU_003", "ECU_004", "ECU_005"]
+    - id: "ZG_CHASSIS"
+      ecus: ["ECU_006", "ECU_007", "ECU_008", "ECU_009", "ECU_010"]
+    - id: "ZG_BODY"
+      ecus: ["ECU_011", "ECU_012", "ECU_013", "ECU_014", "ECU_015"]
+    - id: "ZG_INFOTAINMENT"
+      ecus: ["ECU_016", "ECU_017", "ECU_018", "ECU_019", "ECU_020"]
+    - id: "ZG_ADAS"
+      ecus: ["ECU_021", "ECU_022", "ECU_023", "ECU_024", "ECU_025"]
+    # ... Continue for ECU_026 ~ ECU_100
+
+# Security Configuration
+security:
+  api_key_required: true
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 100
+  
+  # Authentication
+  auth:
+    jwt_secret_file: "/etc/ota-server/jwt_secret"
+    jwt_algorithm: "HS256"
+    jwt_expiration: 3600  # seconds
+  
+  # RBAC
+  rbac:
+    enabled: true
+    roles:
+      - name: "admin"
+        permissions: ["*"]
+      - name: "operator"
+        permissions: ["read", "ota_manage", "diagnostics"]
+      - name: "viewer"
+        permissions: ["read"]
+
+# Monitoring & Logging
+monitoring:
+  enabled: true
+  metrics_port: 9090
+  health_check_path: "/health"
+  
+logging:
+  level: "INFO"
+  format: "json"  # text, json
+  output: "file"  # console, file, both
+  file_path: "/var/log/ota-server/server.log"
+  rotation: "daily"
+  retention_days: 30
+  
+  # Audit Logging
+  audit:
+    enabled: true
+    log_path: "/var/log/ota-server/audit.log"
+    events:
+      - "ota_package_created"
+      - "ota_package_distributed"
+      - "diagnostic_sent"
+      - "ecu_version_updated"
+      - "vehicle_registered"
+
+# Performance Tuning
+performance:
+  worker_class: "uvicorn.workers.UvicornWorker"
+  worker_connections: 1000
+  request_timeout: 300  # seconds
+  keep_alive: 5
+  
+  # Caching
+  cache:
+    enabled: true
+    backend: "redis"
+    ttl: 3600  # seconds
+    max_size: 1000  # items
+

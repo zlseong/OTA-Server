@@ -1,0 +1,264 @@
+# PQC Configuration Parameters
+# Compatible with VMG_and_MCUs project
+# 13 predefined combinations
+
+configurations:
+  # Classical Baseline
+  - id: 0
+    name: "Classical ECC"
+    kem:
+      algorithm: "X25519"
+      public_key_size: 32
+      secret_key_size: 32
+      ciphertext_size: 32
+      shared_secret_size: 32
+    signature:
+      algorithm: "ECDSA-P256"
+      public_key_size: 65
+      secret_key_size: 32
+      signature_size: 64
+    security_bits: 128
+    openssl_groups: "X25519"
+    openssl_sigalgs: "ecdsa_secp256r1_sha256"
+    recommended_for: "Baseline testing"
+  
+  # Hybrid PQC (ML-KEM + ECDSA)
+  - id: 1
+    name: "Hybrid 128-bit"
+    kem:
+      algorithm: "ML-KEM-512"
+      public_key_size: 800
+      secret_key_size: 1632
+      ciphertext_size: 768
+      shared_secret_size: 32
+    signature:
+      algorithm: "ECDSA-P256"
+      public_key_size: 65
+      secret_key_size: 32
+      signature_size: 64
+    security_bits: 128
+    openssl_groups: "mlkem512"
+    openssl_sigalgs: "ecdsa_secp256r1_sha256"
+    recommended_for: "Lightweight devices"
+  
+  - id: 2
+    name: "Hybrid 192-bit (DEFAULT)"
+    kem:
+      algorithm: "ML-KEM-768"
+      public_key_size: 1184
+      secret_key_size: 2400
+      ciphertext_size: 1088
+      shared_secret_size: 32
+    signature:
+      algorithm: "ECDSA-P256"
+      public_key_size: 65
+      secret_key_size: 32
+      signature_size: 64
+    security_bits: 192
+    openssl_groups: "mlkem768"
+    openssl_sigalgs: "ecdsa_secp256r1_sha256"
+    recommended_for: "Production (Default)"
+    is_default: true
+  
+  - id: 3
+    name: "Hybrid 256-bit"
+    kem:
+      algorithm: "ML-KEM-1024"
+      public_key_size: 1568
+      secret_key_size: 3168
+      ciphertext_size: 1568
+      shared_secret_size: 32
+    signature:
+      algorithm: "ECDSA-P256"
+      public_key_size: 65
+      secret_key_size: 32
+      signature_size: 64
+    security_bits: 256
+    openssl_groups: "mlkem1024"
+    openssl_sigalgs: "ecdsa_secp256r1_sha256"
+    recommended_for: "High security requirements"
+  
+  # Pure PQC 128-bit (ML-KEM-512 + ML-DSA)
+  - id: 4
+    name: "Pure PQC 128-bit (ML-DSA-44)"
+    kem:
+      algorithm: "ML-KEM-512"
+      public_key_size: 800
+      secret_key_size: 1632
+      ciphertext_size: 768
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-44"
+      public_key_size: 1312
+      secret_key_size: 2560
+      signature_size: 2420
+    security_bits: 128
+    openssl_groups: "mlkem512"
+    openssl_sigalgs: "mldsa44"
+    recommended_for: "Pure PQC lightweight"
+  
+  - id: 5
+    name: "Pure PQC 128/192-bit (ML-DSA-65)"
+    kem:
+      algorithm: "ML-KEM-512"
+      public_key_size: 800
+      secret_key_size: 1632
+      ciphertext_size: 768
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-65"
+      public_key_size: 1952
+      secret_key_size: 4032
+      signature_size: 3309
+    security_bits: 128
+    openssl_groups: "mlkem512"
+    openssl_sigalgs: "mldsa65"
+    recommended_for: "Mixed security level"
+  
+  - id: 6
+    name: "Pure PQC 128/256-bit (ML-DSA-87)"
+    kem:
+      algorithm: "ML-KEM-512"
+      public_key_size: 800
+      secret_key_size: 1632
+      ciphertext_size: 768
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-87"
+      public_key_size: 2592
+      secret_key_size: 4896
+      signature_size: 4627
+    security_bits: 128
+    openssl_groups: "mlkem512"
+    openssl_sigalgs: "mldsa87"
+    recommended_for: "High signature security"
+  
+  # Pure PQC 192-bit (ML-KEM-768 + ML-DSA)
+  - id: 7
+    name: "Pure PQC 192/128-bit (ML-DSA-44)"
+    kem:
+      algorithm: "ML-KEM-768"
+      public_key_size: 1184
+      secret_key_size: 2400
+      ciphertext_size: 1088
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-44"
+      public_key_size: 1312
+      secret_key_size: 2560
+      signature_size: 2420
+    security_bits: 192
+    openssl_groups: "mlkem768"
+    openssl_sigalgs: "mldsa44"
+    recommended_for: "Balanced security"
+  
+  - id: 8
+    name: "Pure PQC 192-bit (ML-DSA-65)"
+    kem:
+      algorithm: "ML-KEM-768"
+      public_key_size: 1184
+      secret_key_size: 2400
+      ciphertext_size: 1088
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-65"
+      public_key_size: 1952
+      secret_key_size: 4032
+      signature_size: 3309
+    security_bits: 192
+    openssl_groups: "mlkem768"
+    openssl_sigalgs: "mldsa65"
+    recommended_for: "Pure PQC production"
+  
+  - id: 9
+    name: "Pure PQC 192/256-bit (ML-DSA-87)"
+    kem:
+      algorithm: "ML-KEM-768"
+      public_key_size: 1184
+      secret_key_size: 2400
+      ciphertext_size: 1088
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-87"
+      public_key_size: 2592
+      secret_key_size: 4896
+      signature_size: 4627
+    security_bits: 192
+    openssl_groups: "mlkem768"
+    openssl_sigalgs: "mldsa87"
+    recommended_for: "High security pure PQC"
+  
+  # Pure PQC 256-bit (ML-KEM-1024 + ML-DSA)
+  - id: 10
+    name: "Pure PQC 256/128-bit (ML-DSA-44)"
+    kem:
+      algorithm: "ML-KEM-1024"
+      public_key_size: 1568
+      secret_key_size: 3168
+      ciphertext_size: 1568
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-44"
+      public_key_size: 1312
+      secret_key_size: 2560
+      signature_size: 2420
+    security_bits: 256
+    openssl_groups: "mlkem1024"
+    openssl_sigalgs: "mldsa44"
+    recommended_for: "Max KEM security"
+  
+  - id: 11
+    name: "Pure PQC 256/192-bit (ML-DSA-65)"
+    kem:
+      algorithm: "ML-KEM-1024"
+      public_key_size: 1568
+      secret_key_size: 3168
+      ciphertext_size: 1568
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-65"
+      public_key_size: 1952
+      secret_key_size: 4032
+      signature_size: 3309
+    security_bits: 256
+    openssl_groups: "mlkem1024"
+    openssl_sigalgs: "mldsa65"
+    recommended_for: "Balanced high security"
+  
+  - id: 12
+    name: "Pure PQC 256-bit (ML-DSA-87)"
+    kem:
+      algorithm: "ML-KEM-1024"
+      public_key_size: 1568
+      secret_key_size: 3168
+      ciphertext_size: 1568
+      shared_secret_size: 32
+    signature:
+      algorithm: "ML-DSA-87"
+      public_key_size: 2592
+      secret_key_size: 4896
+      signature_size: 4627
+    security_bits: 256
+    openssl_groups: "mlkem1024"
+    openssl_sigalgs: "mldsa87"
+    recommended_for: "Maximum security"
+
+# Performance Benchmarks (Reference only, may vary by platform)
+benchmarks:
+  classical:
+    handshake_time_ms: 5
+    throughput_mbps: 1000
+  hybrid_192:
+    handshake_time_ms: 12
+    throughput_mbps: 800
+  pure_pqc_256:
+    handshake_time_ms: 25
+    throughput_mbps: 600
+
+# Usage Guidelines
+guidelines:
+  development: "Use config 0 or 2 for faster iteration"
+  testing: "Test all 13 configurations for compatibility"
+  production: "Use config 2 (Hybrid 192-bit) as default"
+  high_security: "Use config 12 (Pure PQC 256-bit) for critical systems"
+

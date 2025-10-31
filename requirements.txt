@@ -1,0 +1,56 @@
+# OTA Server Dependencies
+
+# Core Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# MQTT
+paho-mqtt==1.6.1
+aiomqtt==1.2.1
+
+# Database
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.23
+asyncpg==0.29.0
+alembic==1.12.1
+
+# Redis
+redis==5.0.1
+aioredis==2.0.1
+
+# Cryptography
+cryptography==41.0.7
+pycryptodome==3.19.0
+
+# HTTP Client
+httpx==0.25.2
+aiohttp==3.9.1
+
+# Data Validation
+pyyaml==6.0.1
+jsonschema==4.20.0
+
+# Utilities
+python-dotenv==1.0.0
+click==8.1.7
+rich==13.7.0
+zstandard==0.22.0
+python-multipart==0.0.6
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+
+# Logging
+loguru==0.7.2
+
+# Performance
+uvloop==0.19.0
+
+# Code Quality
+black==23.12.0
+flake8==6.1.0
+mypy==1.7.1
+

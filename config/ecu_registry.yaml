@@ -1,0 +1,264 @@
+# ECU Registry Configuration
+# ECU_001 ~ ECU_100
+
+# Zonal Gateway Mapping
+zonal_gateways:
+  - id: "ZG_POWERTRAIN"
+    name: "Powertrain Zone"
+    ip: "192.168.10.1"
+    ecus:
+      - id: "ECU_001"
+        name: "Engine Control Module"
+        type: "ECM"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_002"
+        name: "Transmission Control Module"
+        type: "TCM"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_003"
+        name: "Battery Management System"
+        type: "BMS"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_004"
+        name: "Motor Control Unit"
+        type: "MCU"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_005"
+        name: "Power Distribution Unit"
+        type: "PDU"
+        hardware: "TC375"
+        current_version: "1.0.0"
+
+  - id: "ZG_CHASSIS"
+    name: "Chassis Zone"
+    ip: "192.168.10.2"
+    ecus:
+      - id: "ECU_006"
+        name: "Electronic Stability Control"
+        type: "ESC"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_007"
+        name: "Anti-lock Braking System"
+        type: "ABS"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_008"
+        name: "Electric Power Steering"
+        type: "EPS"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_009"
+        name: "Suspension Control"
+        type: "SUSP"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_010"
+        name: "Tire Pressure Monitoring"
+        type: "TPMS"
+        hardware: "TC375"
+        current_version: "1.0.0"
+
+  - id: "ZG_BODY"
+    name: "Body Zone"
+    ip: "192.168.10.3"
+    ecus:
+      - id: "ECU_011"
+        name: "Body Control Module"
+        type: "BCM"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_012"
+        name: "Door Control Module"
+        type: "DCM"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_013"
+        name: "Climate Control"
+        type: "HVAC"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_014"
+        name: "Lighting Control"
+        type: "LCM"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_015"
+        name: "Seat Control Module"
+        type: "SCM"
+        hardware: "TC375"
+        current_version: "1.0.0"
+
+  - id: "ZG_INFOTAINMENT"
+    name: "Infotainment Zone"
+    ip: "192.168.10.4"
+    ecus:
+      - id: "ECU_016"
+        name: "Head Unit"
+        type: "HU"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_017"
+        name: "Navigation System"
+        type: "NAV"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_018"
+        name: "Audio Amplifier"
+        type: "AMP"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_019"
+        name: "Display Controller"
+        type: "DSP"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_020"
+        name: "Telematics Control Unit"
+        type: "TCU"
+        hardware: "TC375"
+        current_version: "1.0.0"
+
+  - id: "ZG_ADAS"
+    name: "ADAS Zone"
+    ip: "192.168.10.5"
+    ecus:
+      - id: "ECU_021"
+        name: "Forward Camera"
+        type: "CAM_F"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_022"
+        name: "Radar Front"
+        type: "RADAR_F"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_023"
+        name: "LiDAR Unit"
+        type: "LIDAR"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_024"
+        name: "Ultrasonic Sensors"
+        type: "USS"
+        hardware: "TC375"
+        current_version: "1.0.0"
+        
+      - id: "ECU_025"
+        name: "ADAS Central Controller"
+        type: "ADAS_CTL"
+        hardware: "TC375"
+        current_version: "1.0.0"
+
+# Additional ECUs (ECU_026 ~ ECU_100) - Generic placeholder
+  - id: "ZG_RESERVE_1"
+    name: "Reserve Zone 1"
+    ip: "192.168.10.6"
+    ecus:
+      - id: "ECU_026"
+        name: "Reserve ECU 026"
+        type: "GENERIC"
+        hardware: "TC375"
+        current_version: "1.0.0"
+      # ... ECU_027 ~ ECU_040
+
+  - id: "ZG_RESERVE_2"
+    name: "Reserve Zone 2"
+    ip: "192.168.10.7"
+    ecus:
+      - id: "ECU_041"
+        name: "Reserve ECU 041"
+        type: "GENERIC"
+        hardware: "TC375"
+        current_version: "1.0.0"
+      # ... ECU_042 ~ ECU_055
+
+  - id: "ZG_RESERVE_3"
+    name: "Reserve Zone 3"
+    ip: "192.168.10.8"
+    ecus:
+      - id: "ECU_056"
+        name: "Reserve ECU 056"
+        type: "GENERIC"
+        hardware: "TC375"
+        current_version: "1.0.0"
+      # ... ECU_057 ~ ECU_070
+
+  - id: "ZG_RESERVE_4"
+    name: "Reserve Zone 4"
+    ip: "192.168.10.9"
+    ecus:
+      - id: "ECU_071"
+        name: "Reserve ECU 071"
+        type: "GENERIC"
+        hardware: "TC375"
+        current_version: "1.0.0"
+      # ... ECU_072 ~ ECU_085
+
+  - id: "ZG_RESERVE_5"
+    name: "Reserve Zone 5"
+    ip: "192.168.10.10"
+    ecus:
+      - id: "ECU_086"
+        name: "Reserve ECU 086"
+        type: "GENERIC"
+        hardware: "TC375"
+        current_version: "1.0.0"
+      # ... ECU_087 ~ ECU_100
+
+# Version Rules
+version_rules:
+  format: "semantic"  # x.y.z
+  comparison:
+    major: "breaking_change"
+    minor: "feature_addition"
+    patch: "bug_fix"
+  
+  # Version priority (higher number = newer)
+  # 2.0.0 > 1.9.9
+  # 1.5.0 > 1.4.10
+  # 1.0.1 > 1.0.0
+
+# Update Policy
+update_policy:
+  # Automatic update triggers
+  auto_update:
+    enabled: true
+    conditions:
+      - "security_patch"
+      - "critical_bug_fix"
+  
+  # Manual approval required
+  manual_approval:
+    - "major_version_change"
+    - "breaking_changes"
+  
+  # Rollback strategy
+  rollback:
+    enabled: true
+    max_attempts: 3
+    timeout_minutes: 30
+
