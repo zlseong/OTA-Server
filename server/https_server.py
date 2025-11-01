@@ -98,6 +98,7 @@ class HTTPSServer:
         
         # Include API routers
         self._setup_api_v1()
+        self._setup_diagnostics_api()
     
     def _setup_api_v1(self):
         """Setup API v1 routes"""
@@ -457,6 +458,165 @@ class HTTPSServer:
         """
         # TODO: Implement VCI analysis
         return []
+    
+    def _setup_diagnostics_api(self):
+        """Setup remote diagnostics API"""
+        
+        # ============================================================
+        # Remote Diagnostics API
+        # ============================================================
+        
+        @self.app.post("/api/v1/diagnostics/send")
+        async def send_diagnostic_request(request: dict):
+            """
+            Send diagnostic request to ECU via VMG
+            
+            Request body:
+            {
+                "vin": "KMHGH4JH1NU123456",
+                "ecu_id": "ECU_001",
+                "service_id": "0x22",
+                "data": "F190"
+            }
+            """
+            logger.info(f"Diagnostic request: {request}")
+            
+            vin = request.get('vin')
+            ecu_id = request.get('ecu_id')
+            service_id = request.get('service_id')
+            data = request.get('data', '')
+            
+            if not vin or not ecu_id or not service_id:
+                raise HTTPException(status_code=400, detail="Missing required fields")
+            
+            # Generate request ID
+            import uuid
+            request_id = f"diag-{uuid.uuid4().hex[:8]}"
+            
+            # Build MQTT payload
+            mqtt_payload = {
+                "request_id": request_id,
+                "ecu_id": ecu_id,
+                "service_id": service_id,
+                "data": data
+            }
+            
+            # TODO: Publish to MQTT topic: vehicle/{vin}/diagnostics/request
+            # mqtt_client.publish(f"vehicle/{vin}/diagnostics/request", json.dumps(mqtt_payload))
+            
+            logger.info(f"Published diagnostic request {request_id} to vehicle/{vin}/diagnostics/request")
+            
+            return {
+                "status": "sent",
+                "request_id": request_id,
+                "vin": vin,
+                "ecu_id": ecu_id,
+                "message": "Diagnostic request sent to VMG"
+            }
+        
+        @self.app.get("/api/v1/diagnostics/results/{request_id}")
+        async def get_diagnostic_results(request_id: str):
+            """
+            Get diagnostic results
+            
+            Returns:
+            {
+                "request_id": "diag-12345",
+                "status": "completed",
+                "response_data": "62F190KMHGH4JH1NU123456",
+                "decoded": {
+                    "service": "ReadDataByIdentifier",
+                    "did": "0xF190",
+                    "value": "KMHGH4JH1NU123456"
+                }
+            }
+            """
+            # TODO: Query database for results
+            
+            logger.info(f"Querying results for {request_id}")
+            
+            return {
+                "request_id": request_id,
+                "status": "pending",
+                "message": "Request is being processed"
+            }
+        
+        @self.app.post("/api/v1/diagnostics/broadcast")
+        async def broadcast_diagnostic_request(request: dict):
+            """
+            Broadcast diagnostic request to all ECUs in a zone
+            
+            Request body:
+            {
+                "vin": "KMHGH4JH1NU123456",
+                "zone_id": "ZG_POWERTRAIN",
+                "service_id": "0x19",
+                "data": "02FF"
+            }
+            """
+            logger.info(f"Broadcast diagnostic request: {request}")
+            
+            vin = request.get('vin')
+            zone_id = request.get('zone_id')
+            service_id = request.get('service_id')
+            data = request.get('data', '')
+            
+            if not vin or not zone_id or not service_id:
+                raise HTTPException(status_code=400, detail="Missing required fields")
+            
+            # Generate request ID
+            import uuid
+            request_id = f"diag-broadcast-{uuid.uuid4().hex[:8]}"
+            
+            # Build MQTT payload
+            mqtt_payload = {
+                "request_id": request_id,
+                "zone_id": zone_id,
+                "service_id": service_id,
+                "data": data
+            }
+            
+            # TODO: Publish to MQTT topic: vehicle/{vin}/diagnostics/broadcast
+            # mqtt_client.publish(f"vehicle/{vin}/diagnostics/broadcast", json.dumps(mqtt_payload))
+            
+            logger.info(f"Published broadcast request {request_id} to vehicle/{vin}/diagnostics/broadcast")
+            
+            return {
+                "status": "sent",
+                "request_id": request_id,
+                "vin": vin,
+                "zone_id": zone_id,
+                "message": "Broadcast diagnostic request sent to VMG"
+            }
+        
+        @self.app.get("/api/v1/diagnostics/supported-services")
+        async def get_supported_services():
+            """
+            Get list of supported UDS services
+            """
+            return {
+                "services": [
+                    {"sid": "0x10", "name": "DiagnosticSessionControl", "description": "Switch diagnostic session"},
+                    {"sid": "0x11", "name": "ECUReset", "description": "Reset ECU"},
+                    {"sid": "0x14", "name": "ClearDTCInformation", "description": "Clear diagnostic trouble codes"},
+                    {"sid": "0x19", "name": "ReadDTCInformation", "description": "Read diagnostic trouble codes"},
+                    {"sid": "0x22", "name": "ReadDataByIdentifier", "description": "Read data by DID"},
+                    {"sid": "0x27", "name": "SecurityAccess", "description": "Security access"},
+                    {"sid": "0x28", "name": "CommunicationControl", "description": "Control communication"},
+                    {"sid": "0x2E", "name": "WriteDataByIdentifier", "description": "Write data by DID"},
+                    {"sid": "0x31", "name": "RoutineControl", "description": "Control routine"},
+                    {"sid": "0x34", "name": "RequestDownload", "description": "Request download"},
+                    {"sid": "0x36", "name": "TransferData", "description": "Transfer data"},
+                    {"sid": "0x37", "name": "RequestTransferExit", "description": "Exit transfer"},
+                    {"sid": "0x3E", "name": "TesterPresent", "description": "Keep session alive"}
+                ],
+                "common_dids": [
+                    {"did": "0xF190", "name": "VIN", "description": "Vehicle Identification Number"},
+                    {"did": "0xF18C", "name": "ECUSerialNumber", "description": "ECU serial number"},
+                    {"did": "0xF195", "name": "ECUSoftwareVersion", "description": "ECU software version"},
+                    {"did": "0xF191", "name": "ECUHardwareVersion", "description": "ECU hardware version"}
+                ]
+            }
     
     async def start(self):
         """Start HTTPS server"""
