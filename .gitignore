@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Mosquitto
+/var/lib/mosquitto/
+/var/log/mosquitto/
+
+# Campaigns (large binary files)
+server/campaigns/*/full_package.bin
+server/campaigns/*/vmg_package/*.bin
+server/campaigns/*/zone*_package/*.bin
+
+# Firmware binaries
+server/firmware/*.bin
+server/firmware/*.elf
+server/firmware/*.hex
+
+# Certificates (for security)
+server/certs/*.key
+server/certs/*.crt
+server/certs/*.pem
+
+# PQC Library compiled
+server/pqc_lib/*.so
+server/pqc_lib/*.o
+server/server/libpqc_tls.so
+
+# Test files
+*.test
+test_output/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+

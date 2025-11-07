@@ -1,0 +1,4 @@
+flask>=2.3.0
+paho-mqtt>=1.6.1
+werkzeug>=2.3.0
+pycryptodome>=3.18.0
